@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px;
+  background-color: #5e629b;
+  font-size: 1.5rem;
+}
+
+.header__logo {
+}
+
+.header__darkmode {
+}
