@@ -2,12 +2,13 @@
   display: flex;
   justify-content: space-between;
   padding: 25px;
-  background-color: #5e629b;
+  background-color: #c5c9c797;
   font-size: 1.5rem;
+  /* cursor: pointer; */
 }
 
-.header__logo {
-}
-
-.header__darkmode {
+.header-darkmode {
+  background-color: #121212;
+  color: silver;
+  /* cursor: pointer; */
 }

@@ -1,11 +1,13 @@
 import React from "react";
 import "./Header.styles.css";
 
-const Header = () => {
+const Header = (props) => {
   return (
-    <header className="header">
-      <span className="header__logo">Travel There!</span>
-      <span className="header__darkmode">Dark Mode</span>
+    <header className={props.dark ? "header header-darkmode" : "header"}>
+      <span className="header__logo">Geography Now</span>
+      <span className="header__darkmode" onClick={props.clicked}>
+        Dark Mode
+      </span>
     </header>
   );
 };

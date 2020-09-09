@@ -3,38 +3,80 @@ import "./Countries.styles.css";
 import axios from "axios";
 import Card from "../Components/Card/Card.components";
 import SearchBox from "../Components/SearchBox/SearchBox.component";
+import ImportantCard from "../Components/importantCard/importantCard.component";
 
 class Countries extends Component {
   state = {
     countries: [],
     inputValue: "",
-    filteredCountries: [],
+    dropDownValue: "",
+    clickedCountry: false,
+    country: null,
   };
   componentDidMount() {
     axios
       .get("https://restcountries.eu/rest/v2/all")
-      .then((data) => this.setState({ filteredCountries: data.data }));
+      .then((data) => this.setState({ countries: data.data }));
   }
 
   searchInputHandler = (event) => {
-    const filtered = this.state.filteredCountries.filter((country) =>
-      country.name.toLowerCase().includes(event.target.value.toLowerCase())
+    this.setState({ inputValue: event.target.value });
+  };
+
+  dropDownHandler = (event) => {
+    this.setState({ dropDownValue: event.target.value });
+  };
+
+  showIcardHandler = (numericCode) => {
+    this.setState({ clickedCountry: !this.state.clickedCountry });
+    const res = this.state.countries.find(
+      (country) => country.numericCode === numericCode
     );
-    console.log(filtered);
-    this.setState({ filteredCountries: filtered });
+    this.setState({ country: res }, (country) => console.log(country));
+    // console.log(res);
   };
 
   render() {
+    const filtered = this.state.countries.filter(
+      (country) =>
+        country.name
+          .toLowerCase()
+          .includes(this.state.inputValue.toLowerCase()) &&
+        country.region
+          .toLowerCase()
+          .includes(this.state.dropDownValue.toLowerCase())
+    );
+
+    console.log(this.state.country);
+
     return (
       <Fragment>
-        <SearchBox searcher={this.searchInputHandler} />
-        <div className="countries-container">
-          {this.state.filteredCountries.map((country) => (
+        <SearchBox
+          searcher={this.searchInputHandler}
+          drop={this.dropDownHandler}
+          dark={this.props.dark}
+        />
+        <Fragment>
+          <ImportantCard
+            show={this.state.clickedCountry}
+            country={this.state.country}
+          />
+        </Fragment>
+        <div
+          className={
+            this.props.dark
+              ? "countries-container dark-background"
+              : "countries-container"
+          }
+        >
+          {filtered.map((country) => (
             <Card
               name={country.name}
               flag={country.flag}
               capital={country.capital}
               key={country.numericCode}
+              dark={this.props.dark}
+              clicked={() => this.showIcardHandler(country.numericCode)}
             />
           ))}
         </div>
